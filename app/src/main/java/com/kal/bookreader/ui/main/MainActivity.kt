@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import com.kal.bookreader.ui.bookshelf.BookshelfScreen
+import com.kal.bookreader.ui.bookshelf.GetAndDisplayBooks
 import com.kal.bookreader.ui.theme.BookReaderTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             BookReaderTheme {
                 // A surface container using the 'background' color from the theme
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    BookshelfScreen()
+                    GetAndDisplayBooks()
                 }
             }
         }

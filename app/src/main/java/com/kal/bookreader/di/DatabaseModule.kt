@@ -1,7 +1,6 @@
 package com.kal.bookreader.di
 
 import android.content.Context
-import androidx.room.Room
 import com.kal.bookreader.data.AppDatabase
 import com.kal.bookreader.data.dao.BookDao
 import dagger.Module
