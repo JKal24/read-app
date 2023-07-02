@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface BookRepository {
     suspend fun getCurrentBooks() : Flow<List<Book>>
+    suspend fun addBooks(vararg books : Book)
 }

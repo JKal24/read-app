@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.kal.bookreader"
-        minSdk 21
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -75,6 +75,7 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     implementation "com.google.accompanist:accompanist-permissions:0.29.0-alpha"
+    implementation("org.jsoup:jsoup:1.15.4")
 }
 
 kapt {
