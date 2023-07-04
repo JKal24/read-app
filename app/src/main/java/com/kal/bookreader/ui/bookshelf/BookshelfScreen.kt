@@ -16,10 +16,10 @@ import com.kal.bookreader.data.entity.Book
 @Preview
 fun GetAndDisplayBooks() {
     //books = bookDao.getBooks().collectAsState(initial = listOf())
-    val books = listOf(Book(0, "book1", "Yeah", "Okay", "111"),
-        Book(1, "book2", "Hmm", "No", "111"),
-        Book(1, "book3", "Hmm", "No", "111"),
-        Book(1, "book4", "Hmm", "No", "111"))
+    val books = listOf(Book("book1","Ok","Yeah"),
+        Book("book2","Ok","Hmm"),
+        Book("book3","Ok","Hmm"),
+        Book("book4","Ok","Hmm"))
 
     Scaffold(
         scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed)),
@@ -62,10 +62,10 @@ fun DisplayBook(book : Book) {
             .clickable(onClick = {
 
             }), horizontalArrangement = Arrangement.SpaceEvenly) {
-            Text(text = book.imageSrc)
+            Text(text = book.book_src)
             Column {
-                Text(text = book.book_name + " by " + book.author)
-                Text(text = book.book_description)
+                Text(text = book.book_name)
+                Text(text = book.image_src)
             }
     }
 }

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.kal.bookreader.data.dao.BookDao
 import com.kal.bookreader.data.entity.Book
 
-@Database(entities = [Book::class], version = 1, exportSchema = true)
+@Database(entities = [Book::class], version = 2, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun BookDao() : BookDao
     companion object {

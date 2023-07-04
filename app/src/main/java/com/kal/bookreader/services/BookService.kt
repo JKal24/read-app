@@ -8,10 +8,7 @@ import android.os.IBinder
 import android.provider.OpenableColumns
 import androidx.core.content.ContextCompat
 import com.kal.bookreader.domain.repository.BookRepository
-import com.kal.bookreader.utils.ExtraUri
-import com.kal.bookreader.utils.asSequence
-import com.kal.bookreader.utils.epubParser
-import com.kal.bookreader.utils.isServiceRunning
+import com.kal.bookreader.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -59,6 +56,15 @@ class BookService : Service() {
                 ).asSequence().map { it.getString(0) }.last()
 
                 val epub = inputStream.use { epubParser(inputStream = it) }
+                val bookSrc = contentResolver.query(
+                    intentUri.uri,
+                    arrayOf(OpenableColumns.DISPLAY_NAME),
+                    null,
+                    null,
+                    null,
+                    null
+                ).asSequence().map { it.getString(0) }.last()
+                importEpub(epub, bookRepository, bookSrc)
 
                 stopSelf(startId)
             }
