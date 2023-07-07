@@ -9,16 +9,21 @@ import android.provider.OpenableColumns
 import androidx.core.content.ContextCompat
 import com.kal.bookreader.domain.repository.BookRepository
 import com.kal.bookreader.utils.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class BookService : Service() {
 
     @Inject
     lateinit var bookRepository: BookRepository
+
+    @Inject
+    lateinit var fileResolver: FileResolver
 
     private var serviceJob: Job? = null
 
@@ -46,25 +51,29 @@ class BookService : Service() {
             serviceJob = CoroutineScope(Dispatchers.IO).launch {
                 val inputStream = contentResolver.openInputStream(intentUri.uri) ?: return@launch
 
-                val fileName = contentResolver.query(
+                val fileCursor = contentResolver.query(
                     intentUri.uri,
                     arrayOf(OpenableColumns.DISPLAY_NAME),
                     null,
                     null,
                     null,
                     null
-                ).asSequence().map { it.getString(0) }.last()
+                )
+                val fileName = fileCursor.asSequence().map { it.getString(0) }.last()
+                fileCursor?.close()
 
                 val epub = inputStream.use { epubParser(inputStream = it) }
-                val bookSrc = contentResolver.query(
+                val bookCursor = contentResolver.query(
                     intentUri.uri,
                     arrayOf(OpenableColumns.DISPLAY_NAME),
                     null,
                     null,
                     null,
                     null
-                ).asSequence().map { it.getString(0) }.last()
-                importEpub(epub, bookRepository, bookSrc)
+                )
+                val bookSrc = bookCursor.asSequence().map { it.getString(0) }.last()
+                bookCursor?.close()
+                importEpub(fileName, epub, bookRepository, bookSrc, fileResolver)
 
                 stopSelf(startId)
             }

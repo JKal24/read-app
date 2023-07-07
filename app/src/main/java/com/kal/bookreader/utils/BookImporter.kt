@@ -6,8 +6,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
-fun importEpub(epub : EpubBook, repository: BookRepository, bookSrc: String) {
+suspend fun importEpub(storageFolderName: String, epub : EpubBook, repository: BookRepository, bookSrc: String, fileResolver: FileResolver) {
+    if (epub.coverImage != null) {
+        importBookImage(fileResolver.getStorageBookCoverImageFile(storageFolderName), epub.coverImage.image)
+    }
 
+    repository.addBooks(Book(
+        bookSrc,
+        storageFolderName,
+        fileResolver.getLocalBookCoverPath(),
+    ))
 }
 
 suspend fun importBookImage(

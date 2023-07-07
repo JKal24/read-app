@@ -14,6 +14,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        System.setProperty(
+            kotlinx.coroutines.DEBUG_PROPERTY_NAME,
+            kotlinx.coroutines.DEBUG_PROPERTY_VALUE_ON
+        )
         super.onCreate(savedInstanceState)
 
         setContent {
