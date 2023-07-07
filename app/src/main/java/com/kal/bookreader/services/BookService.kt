@@ -1,11 +1,13 @@
 package com.kal.bookreader.services
 
+import android.app.Notification
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.IBinder
 import android.provider.OpenableColumns
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.kal.bookreader.domain.repository.BookRepository
 import com.kal.bookreader.utils.*
@@ -35,6 +37,16 @@ class BookService : Service() {
 
         private fun isRunning(context: Context): Boolean =
             context.isServiceRunning(BookService::class.java)
+    }
+
+    private val id = "add epub"
+    override fun onCreate() {
+        super.onCreate()
+        val builder = NotificationCompat.Builder(this, id.hashCode().toString())
+            .setContentTitle(id)
+            .setContentText(id)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        startForeground(id.hashCode(), builder.build())
     }
 
     override fun onBind(p0: Intent?): IBinder? = null
