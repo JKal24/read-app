@@ -5,21 +5,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kal.bookreader.R
 import com.kal.bookreader.data.entity.Book
 
 @Composable
-@Preview
-fun GetAndDisplayBooks() {
-    //books = bookDao.getBooks().collectAsState(initial = listOf())
-    val books = listOf(Book("book1","Ok","Yeah"),
-        Book("book2","Ok","Hmm"),
-        Book("book3","Ok","Hmm"),
-        Book("book4","Ok","Hmm"))
+fun GetAndDisplayBooks(bookshelfViewModel: BookshelfViewModel = viewModel()) {
+    val books = bookshelfViewModel.getBooks().collectAsState(initial = listOf())
 
     Scaffold(
         scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed)),
@@ -29,7 +25,7 @@ fun GetAndDisplayBooks() {
                     Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    books.forEach {
+                    books.value.forEach {
                         DisplayBook(book = it)
                     }
                 }

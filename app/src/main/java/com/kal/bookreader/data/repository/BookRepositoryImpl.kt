@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class BookRepositoryImpl @Inject constructor(private val bookDao: BookDao): BookRepository {
 
-    override suspend fun getCurrentBooks(): Flow<List<Book>> = bookDao.getBooks()
+    override fun getCurrentBooks(): Flow<List<Book>> = bookDao.getBooks()
     override suspend fun addBooks(vararg books: Book) {
         // TO-DO
         bookDao.insertAll(*books)

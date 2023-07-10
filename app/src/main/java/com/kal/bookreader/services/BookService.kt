@@ -1,6 +1,8 @@
 package com.kal.bookreader.services
 
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -8,6 +10,7 @@ import android.net.Uri
 import android.os.IBinder
 import android.provider.OpenableColumns
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.kal.bookreader.domain.repository.BookRepository
 import com.kal.bookreader.utils.*
@@ -42,6 +45,11 @@ class BookService : Service() {
     private val id = "add epub"
     override fun onCreate() {
         super.onCreate()
+
+        val manager = NotificationManagerCompat.from(this)
+        val channel = NotificationChannel(id.hashCode().toString(), id, NotificationManager.IMPORTANCE_DEFAULT)
+        manager.createNotificationChannel(channel)
+
         val builder = NotificationCompat.Builder(this, id.hashCode().toString())
             .setContentTitle(id)
             .setContentText(id)
