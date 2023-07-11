@@ -11,6 +11,8 @@ suspend fun importEpub(storageFolderName: String, epub : EpubBook, repository: B
         importBookImage(fileResolver.getStorageBookCoverImageFile(storageFolderName), epub.coverImage.image)
     }
 
+    repository.removeBook(bookSrc)
+
     repository.addBooks(Book(
         bookSrc,
         storageFolderName,

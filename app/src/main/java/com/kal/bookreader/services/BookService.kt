@@ -93,6 +93,7 @@ class BookService : Service() {
                 )
                 val bookSrc = bookCursor.asSequence().map { it.getString(0) }.last()
                 bookCursor?.close()
+
                 importEpub(fileName, epub, bookRepository, bookSrc, fileResolver)
 
                 stopSelf(startId)
