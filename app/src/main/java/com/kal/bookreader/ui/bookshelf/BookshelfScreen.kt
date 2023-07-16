@@ -20,12 +20,14 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.kal.bookreader.R
 import com.kal.bookreader.data.entity.Book
+import com.kal.bookreader.ui.views.BookCardView
 import java.io.File
 import java.nio.file.Paths
 
 @Composable
 fun GetAndDisplayBooks(bookshelfViewModel: BookshelfViewModel = viewModel()) {
     val books = bookshelfViewModel.getBooks().collectAsState(initial = listOf())
+    val context by rememberUpdatedState(LocalContext.current)
 
     Scaffold(
         scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed)),
@@ -39,7 +41,10 @@ fun GetAndDisplayBooks(bookshelfViewModel: BookshelfViewModel = viewModel()) {
                         .fillMaxWidth()
                         .fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     books.value.forEach {
-                        DisplayBook(book = it)
+                        BookCardView(
+                            bookTitle = it.book_name,
+                            bookClick = { handleReadingBook(context) }
+                        )
                     }
                 }
 
@@ -63,42 +68,6 @@ fun GetAndDisplayBooks(bookshelfViewModel: BookshelfViewModel = viewModel()) {
     )
 }
 
-@Composable
-fun DisplayBook(book : Book) {
-    Box(
-        Modifier.fillMaxWidth()
-    ) {
-        val context by rememberUpdatedState(LocalContext.current)
-        val imageSrc = getStorageBookImageFile(context, book.book_src, book.image_src)
+fun handleReadingBook(context: Context) {
 
-        val bookImageResource = ImageRequest.Builder(context)
-            .data(imageSrc)
-            .crossfade(true)
-            .build()
-
-        val imageErrorResource = ImageRequest.Builder(context)
-            .data(null)
-            .crossfade(true)
-            .build()
-
-        AsyncImage(
-            model = bookImageResource,
-            contentDescription = book.book_name,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier,
-            error = rememberAsyncImagePainter(
-                model = imageErrorResource,
-                contentScale = ContentScale.Fit
-            )
-        )
-    }
-}
-
-fun getStorageBookImageFile(context: Context, bookPath: String, imagePath: String): File {
-    val folderBooks = File(context.filesDir, "books")
-    return Paths.get(
-        folderBooks.absolutePath,
-        bookPath.removePrefix("local://"),
-        imagePath.removePrefix("local://")
-    ).toFile()
 }
